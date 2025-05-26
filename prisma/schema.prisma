@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  balance   Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  products    Product[]
+  bids        Bid[]
+  transactions Transaction[]
+
+  @@map("users")
+}
+
+model Product {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  startingPrice Float
+  currentPrice Float
+  endTime      DateTime
+  category     String
+  condition    String
+  videos       String[] // Changed from images to videos
+  aiVerified   Boolean  @default(false)
+  aiStatus     String   @default("pending") // "pending", "processing", "accepted", "rejected", "error"
+  aiMessage    String?  // AI response message
+  aiVerifiedAt DateTime? // When AI verification completed
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  sellerId String
+  seller   User   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  bids     Bid[]
+
+  @@map("products")
+}
+
+model Bid {
+  id        String   @id @default(cuid())
+  amount    Float
+  createdAt DateTime @default(now())
+
+  // Relations
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  bidderId  String
+  bidder    User    @relation(fields: [bidderId], references: [id], onDelete: Cascade)
+
+  @@map("bids")
+}
+
+model Transaction {
+  id        String   @id @default(cuid())
+  amount    Float
+  type      String   // "deposit", "withdrawal", "bid_refund", "sale_payment"
+  status    String   // "pending", "completed", "failed"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
+}
