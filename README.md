@@ -32,32 +32,30 @@
 ```bash
 git clone https://github.com/meta18p/Bid2buy_final.git
 cd bid2buy
+```
+
 2. Install Dependencies
-bash
-Copy
-Edit
+```bash
 npm install
+```
 3. Add .env File
 Create a .env file in the root directory with the following variables:
 
-env
-Copy
-Edit
+```bash
 NEXTAUTH_SECRET=your_secret_here
 NODE_ENV=development
 DATABASE_URL=your_database_url_here
+```
 4. Setup Prisma (Database ORM)
-bash
-Copy
-Edit
+```bash
 npx prisma generate
 npx prisma migrate dev --name init
+```
 This sets up the database schema and generates the Prisma client.
 
 5. Start the Development Server
-bash
-Copy
-Edit
+```bash
 npm run dev
-The app should now be running at http://localhost:3000 (or specified port).
+```
+The app should now be running at http://localhost:3000.
 
