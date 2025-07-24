@@ -30,7 +30,7 @@
 #### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/bid2buy.git
+git clone https://github.com/meta18p/Bid2buy_final.git
 cd bid2buy
 2. Install Dependencies
 bash
